@@ -1,0 +1,15 @@
+{
+  "name": "better-life",
+  "version": "1.0.0",
+  "description": "Mobile typographic art piece — 'Everyone else is having a better life than me'",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

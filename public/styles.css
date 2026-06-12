@@ -1,0 +1,213 @@
+/* ---------------------------------------------------------------
+   "Everyone else is having a better life than me"
+   One word per full-screen panel. Vertical scroll-snap.
+   White letters with a black outline. Pink / red alternating.
+   --------------------------------------------------------------- */
+
+:root {
+  /* Panel colors + the bottom rule on each section. */
+  --pink: #ff2d87;
+  --red: #ff1f23;
+  --border-w: 9px;
+  --border-color: #000000;
+
+  --font: "Londrina Solid", "Arial Narrow", sans-serif;
+  --weight: 400;
+  --fs: 60cqi;
+  --tracking: 0.08em;
+  --leading: 1.05;
+  --stroke: 9px;
+  --pink: #ff7ab4;
+  --red: #ff1f23;
+  --border-color: #000000;
+  --border-w: 3.5px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+  background: var(--red);
+}
+
+main {
+  /* Explicit scroll container: one word locks to the screen at a
+     time. Putting snap on a sized element (not <body>) is the more
+     robust setup across browsers. */
+  height: 100dvh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  scroll-snap-type: y mandatory;
+}
+
+section {
+  /* dvh = dynamic viewport height: fills the screen correctly on
+     mobile even as the browser chrome shows/hides. */
+  height: 100dvh;
+  scroll-snap-align: start;
+
+  /* Bottom rule on each section. */
+  border-bottom: var(--border-w) solid var(--border-color);
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 6vw;
+
+  /* Lets the word size itself against the panel via cqi units. */
+  container-type: size;
+}
+
+/* Fixed alternation: 1 pink, 2 red, 3 pink ... */
+section:nth-child(odd) {
+  background: var(--pink);
+}
+section:nth-child(even) {
+  background: var(--red);
+}
+
+.word {
+  font-family: var(--font);
+  font-weight: var(--weight);
+  text-transform: uppercase;
+  line-height: var(--leading);
+  letter-spacing: var(--tracking);
+  text-align: left;
+
+  font-size: var(--fs);
+}
+
+/* ---------------------------------------------------------------
+   Type playground — live controls.
+   Purely a dev aid; delete #panel + #panel-toggle markup and
+   controls.js before publishing if you don't want it shipped.
+   --------------------------------------------------------------- */
+#panel-toggle {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+#panel {
+  position: fixed;
+  z-index: 999;
+  left: max(12px, env(safe-area-inset-left));
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  max-width: 360px;
+  margin-inline: auto;
+
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 14px;
+
+  background: rgba(18, 18, 20, 0.82);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+#panel[hidden] {
+  display: none;
+}
+
+#panel .row {
+  display: grid;
+  grid-template-columns: 70px 1fr 48px;
+  align-items: center;
+  gap: 8px;
+}
+
+#panel label {
+  opacity: 0.8;
+}
+
+#panel .val {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.9;
+}
+
+#panel select,
+#panel input[type="range"] {
+  width: 100%;
+}
+
+#panel select {
+  grid-column: 2 / 4;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: #1e1e22;
+  color: #fff;
+}
+
+#panel input[type="color"] {
+  grid-column: 2 / 4;
+  width: 100%;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+}
+
+#panel .actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+#panel .actions button {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+#panel .actions button:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Each chunk (max 3 letters) sits on its own line. */
+.line {
+  display: block;
+
+  /* White fill, black outline around every letter.
+     paint-order keeps the stroke *behind* the fill so the white
+     stays clean and the letters don't get eaten by the outline. */
+  color: #fff;
+  -webkit-text-stroke: var(--stroke) #000;
+  paint-order: stroke fill;
+}
+
