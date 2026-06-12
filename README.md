@@ -4,6 +4,9 @@ Mobile typographic art: the words *"Everyone else is having a better life than m
 one per full-screen panel. Vertical scroll-snap, tall hand-drawn letters in white with a
 black outline, a black rule under each panel, backgrounds alternating pink / red.
 
+Built for mobile. On desktop the experience is shown as a centred, phone-width column
+on a pastel-blue backdrop (the same blue tints the mobile browser chrome).
+
 ## Run locally
 
 ```bash
@@ -28,9 +31,11 @@ Two ways to tweak the design:
 **1. The live control panel.** The panel is hidden by default. Reveal it by adding
 `?edit` to the URL — e.g. http://localhost:3000/?edit — then tap the **⚙** gear
 (top-right) to open it. Controls: font, weight, size, kerning, leading, outline
-thickness, pink color, red color, border color, and border width. Changes apply
+thickness, pink color, red color, border color, border width, **Chrome** (mobile
+browser-bar color) and **Backdrop** (the desktop area around the column). Changes apply
 instantly and persist in `localStorage` (a refresh keeps them). **Reset** restores
-defaults. **Copy CSS** copies a ready-to-paste `:root` block of your current settings.
+defaults. **Copy CSS** copies a ready-to-paste `:root` block of your current settings
+(plus the Chrome color as a comment — see below).
 
 Without `?edit`, the gear and panel stay hidden and the piece renders straight from the
 CSS `:root` values — so the published art is clean, but you can edit anytime by visiting
@@ -50,11 +55,19 @@ the `?edit` URL.
   --red:  #ff1f23;      /* even panels */
   --border-color: #000000;
   --border-w: 9px;      /* bottom rule on each section */
+  --backdrop: #a7c7e7;  /* desktop area around the column */
 }
 ```
 
-To finalize a look: dial it in with the panel → **Copy CSS** → paste over the `:root`
-block above.
+The mobile **browser chrome** color is *not* a CSS variable — it's the
+`<meta name="theme-color" content="#a7c7e7">` tag in `index.html`. **Copy CSS** emits its
+current value as a comment so you know what to paste there.
+
+The desktop **column width** is `max-width` on `main` in `styles.css` (default `460px`);
+on mobile the column is full-width, so this only affects wider screens.
+
+To finalize a look: dial it in with the panel → **Copy CSS** → paste the `:root` values
+over the block above, and the Chrome color into the `theme-color` meta tag.
 
 ### Available fonts
 

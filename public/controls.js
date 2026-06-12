@@ -24,6 +24,7 @@ const DEFAULTS = {
   borderColor: "#000000",
   borderW: 9, // px
   theme: "#a7c7e7", // mobile browser chrome (theme-color meta)
+  backdrop: "#a7c7e7", // desktop backdrop around the column
 };
 
 const STORAGE_KEY = "better-life-type";
@@ -42,6 +43,7 @@ const els = {
   borderW: document.getElementById("c-border-w"),
   theme: document.getElementById("c-theme"),
   themeMeta: document.querySelector('meta[name="theme-color"]'),
+  backdrop: document.getElementById("c-backdrop"),
   vSize: document.getElementById("v-size"),
   vKern: document.getElementById("v-kern"),
   vLead: document.getElementById("v-lead"),
@@ -86,6 +88,7 @@ function apply(state) {
   root.style.setProperty("--border-color", state.borderColor);
   root.style.setProperty("--border-w", state.borderW + "px");
   if (els.themeMeta) els.themeMeta.setAttribute("content", state.theme);
+  root.style.setProperty("--backdrop", state.backdrop);
 
   els.font.value = state.font;
   els.weight.value = state.weight;
@@ -98,6 +101,7 @@ function apply(state) {
   els.borderColor.value = state.borderColor;
   els.borderW.value = state.borderW;
   els.theme.value = state.theme;
+  els.backdrop.value = state.backdrop;
 
   els.vSize.textContent = state.size + "cqi";
   els.vKern.textContent = Number(state.kern).toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "em";
@@ -130,6 +134,7 @@ els.red.addEventListener("input", (e) => update("red", e.target.value));
 els.borderColor.addEventListener("input", (e) => update("borderColor", e.target.value));
 els.borderW.addEventListener("input", (e) => update("borderW", Number(e.target.value)));
 els.theme.addEventListener("input", (e) => update("theme", e.target.value));
+els.backdrop.addEventListener("input", (e) => update("backdrop", e.target.value));
 
 // Copy a ready-to-paste :root block of the current settings.
 els.copy.addEventListener("click", async () => {
@@ -144,6 +149,7 @@ els.copy.addEventListener("click", async () => {
     "  --red: " + state.red + ";",
     "  --border-color: " + state.borderColor + ";",
     "  --border-w: " + state.borderW + "px;",
+    "  --backdrop: " + state.backdrop + ";",
     "",
     "  /* Browser chrome — set on the meta tag in index.html: */",
     '  /* <meta name="theme-color" content="' + state.theme + '"> */',

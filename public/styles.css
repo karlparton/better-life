@@ -5,12 +5,6 @@
    --------------------------------------------------------------- */
 
 :root {
-  /* Panel colors + the bottom rule on each section. */
-  --pink: #ff2d87;
-  --red: #ff1f23;
-  --border-w: 9px;
-  --border-color: #000000;
-
   --font: "Londrina Solid", "Arial Narrow", sans-serif;
   --weight: 400;
   --fs: 60cqi;
@@ -21,6 +15,10 @@
   --red: #ff1f23;
   --border-color: #000000;
   --border-w: 3.5px;
+  --backdrop: #3d9eff;
+
+  /* Browser chrome — set on the meta tag in index.html: */
+  /* <meta name="theme-color" content="#3d9eff"> */
 }
 
 * {
@@ -36,7 +34,8 @@ body {
 
 body {
   overflow: hidden;
-  background: var(--red);
+  /* Backdrop visible only on wide (desktop) screens, around the column. */
+  background: var(--backdrop);
 }
 
 main {
@@ -48,6 +47,12 @@ main {
   overflow-x: hidden;
   overscroll-behavior: none;
   scroll-snap-type: y mandatory;
+
+  /* Phone-shaped column: full width on mobile, capped on desktop so
+     the cqi-scaled type stays sane. */
+  width: 100%;
+  max-width: 460px;
+  margin-inline: auto;
 }
 
 section {
