@@ -23,6 +23,7 @@ const DEFAULTS = {
   red: "#ff1f23",
   borderColor: "#000000",
   borderW: 9, // px
+  theme: "#a7c7e7", // mobile browser chrome (theme-color meta)
 };
 
 const STORAGE_KEY = "better-life-type";
@@ -39,6 +40,8 @@ const els = {
   red: document.getElementById("c-red"),
   borderColor: document.getElementById("c-border-color"),
   borderW: document.getElementById("c-border-w"),
+  theme: document.getElementById("c-theme"),
+  themeMeta: document.querySelector('meta[name="theme-color"]'),
   vSize: document.getElementById("v-size"),
   vKern: document.getElementById("v-kern"),
   vLead: document.getElementById("v-lead"),
@@ -82,6 +85,7 @@ function apply(state) {
   root.style.setProperty("--red", state.red);
   root.style.setProperty("--border-color", state.borderColor);
   root.style.setProperty("--border-w", state.borderW + "px");
+  if (els.themeMeta) els.themeMeta.setAttribute("content", state.theme);
 
   els.font.value = state.font;
   els.weight.value = state.weight;
@@ -93,6 +97,7 @@ function apply(state) {
   els.red.value = state.red;
   els.borderColor.value = state.borderColor;
   els.borderW.value = state.borderW;
+  els.theme.value = state.theme;
 
   els.vSize.textContent = state.size + "cqi";
   els.vKern.textContent = Number(state.kern).toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "em";
@@ -124,6 +129,7 @@ els.pink.addEventListener("input", (e) => update("pink", e.target.value));
 els.red.addEventListener("input", (e) => update("red", e.target.value));
 els.borderColor.addEventListener("input", (e) => update("borderColor", e.target.value));
 els.borderW.addEventListener("input", (e) => update("borderW", Number(e.target.value)));
+els.theme.addEventListener("input", (e) => update("theme", e.target.value));
 
 // Copy a ready-to-paste :root block of the current settings.
 els.copy.addEventListener("click", async () => {
@@ -138,6 +144,9 @@ els.copy.addEventListener("click", async () => {
     "  --red: " + state.red + ";",
     "  --border-color: " + state.borderColor + ";",
     "  --border-w: " + state.borderW + "px;",
+    "",
+    "  /* Browser chrome — set on the meta tag in index.html: */",
+    '  /* <meta name="theme-color" content="' + state.theme + '"> */',
   ].join("\n");
   try {
     await navigator.clipboard.writeText(css);

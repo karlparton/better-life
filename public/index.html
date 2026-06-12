@@ -6,6 +6,8 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
+    <!-- Tints the mobile browser chrome (address/status bar). -->
+    <meta name="theme-color" content="#a7c7e7" />
     <title>Everyone else is having a better life than me</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -110,6 +112,10 @@
         <label for="c-border-w">Border w.</label>
         <input id="c-border-w" type="range" min="0" max="40" step="0.5" />
         <span class="val" id="v-border-w"></span>
+      </div>
+      <div class="row">
+        <label for="c-theme">Chrome</label>
+        <input id="c-theme" type="color" />
       </div>
       <div class="actions">
         <button id="c-copy" type="button">Copy CSS</button>
